@@ -98,8 +98,7 @@ def main():
     print(f'Inspecting DeepSpeed Checkpoint')
     args = parse_arguments()
 
-    ds_checkpoint = DeepSpeedCheckpoint(args.folder, args.target_tp,
-                                        args.target_pp)
+    ds_checkpoint = DeepSpeedCheckpoint(args.folder, args.target_tp, args.target_pp)
     ds_checkpoint.validate_files()
 
     show_simple_state(ds_checkpoint)
