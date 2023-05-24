@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     convert_bloom_checkpoint_to_pytorch(
         args.bloom_checkpoint_path,
-        args.pytorch_dump_folder_path,
+        os.path.join(args.pytorch_dump_folder_path, 'config.json'),
         args.pytorch_dump_folder_path,
         args.shard_model,
         args.pretraining_tp,
