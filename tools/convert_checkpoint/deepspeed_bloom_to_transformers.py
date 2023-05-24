@@ -1,6 +1,7 @@
 import argparse
 import os.path
 
+import torch
 from transformers import BloomConfig
 from transformers.models.bloom.convert_bloom_original_checkpoint_to_pytorch import convert_bloom_checkpoint_to_pytorch
 
@@ -49,7 +50,9 @@ if __name__ == "__main__":
         os.makedirs(args.pytorch_dump_folder_path)
 
     config = BloomConfig.from_pretrained(args.bloom_model)
+    config.torch_dtype = torch.bfloat16
     config.to_json_file(os.path.join(args.pytorch_dump_folder_path, 'config.json'))
+
 
     convert_bloom_checkpoint_to_pytorch(
         args.bloom_checkpoint_path,
