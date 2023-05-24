@@ -107,7 +107,7 @@ def generate_samples_input_from_file(model):
                   'it to {}'.format(sample_output_file))
         else:
             sample_output_file = args.sample_output_file
-        fname_out = open(sample_output_file, "w+")
+        fname_out = open(sample_output_file, "wt", encoding='utf-8')
 
     context_count = 0
     model.eval()
