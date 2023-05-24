@@ -90,8 +90,8 @@ def _save_checkpoint(file_path, chkpt_sd):
 def _renest_sd(sd):
     new_sd = OrderedDict()
     for key, value in sd.items():
-        a = key.split('.')[0]
-        b = '.'.join(key.split('.')[1:])
+        b = key.split('.')[-1]
+        a = '.'.join(key.split('.')[:-1])
         new_sd[a] = {b: value}
     return new_sd
 
