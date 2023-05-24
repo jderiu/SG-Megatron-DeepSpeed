@@ -1,5 +1,7 @@
 import argparse
+import os.path
 
+from transformers import BloomConfig
 from transformers.models.bloom.convert_bloom_original_checkpoint_to_pytorch import convert_bloom_checkpoint_to_pytorch
 
 if __name__ == "__main__":
@@ -35,7 +37,20 @@ if __name__ == "__main__":
         type=int,
         help="Pretraining TP rank that has been used when training the model in Megatron-LM \n",
     )
+    parser.add_argument(
+        "--bloom_model",
+        default='bigscience/bloom-1b1',
+        type=str,
+        help="Which Size\n",
+    )
     args = parser.parse_args()
+
+    if not os.path.exists(args.pytorch_dump_folder_path):
+        os.makedirs(args.pytorch_dump_folder_path)
+
+    config = BloomConfig.from_pretrained(args.bloom_model)
+    config.to_json_file(os.path.join(args.pytorch_dump_folder_path, 'config.json'))
+
     convert_bloom_checkpoint_to_pytorch(
         args.bloom_checkpoint_path,
         args.bloom_config_file,
