@@ -24,7 +24,7 @@ path = '/mnt/e/work_space_data/bloom_chkp/bloom-1b1/hf'
 # path = 'bigscience/bloom-560m'
 device = 'cpu'
 tokenizer = BloomTokenizerFast.from_pretrained(bloom_model)
-model = BloomForCausalLM.from_pretrained(path, decice_map='auto')
+model = BloomForCausalLM.from_pretrained(path)
 #model.to(device)
 
 p_tag = '<|prompter|>:'
