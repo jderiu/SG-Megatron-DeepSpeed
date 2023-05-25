@@ -18,6 +18,13 @@ CHECKPOINT_VERSION_KEY = 'checkpoint_version'
 CHECKPOINT_VERSION_VALUE = 3.0
 ITERATION_KEY = 'iteration'
 
+layer_rename_map = {
+    "word_embeddings.weight": "word_embeddings.weight",
+    "word_embeddings.norm.weight": "word_embeddings_layernorm.weight",
+    "word_embeddings.norm.bias": "word_embeddings_layernorm.bias",
+    "weight": "ln_f.weight",
+    "bias": "ln_f.bias",
+}
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -90,6 +97,8 @@ def _save_checkpoint(file_path, chkpt_sd):
 def _renest_sd(sd):
     new_sd = OrderedDict()
     for key, value in sd.items():
+        key = layer_rename_map.get(key, key)
+
         b = key.split('.')[-1]
         a = '.'.join(key.split('.')[:-1])
         new_sd[a] = {b: value}
@@ -169,8 +178,7 @@ def main():
         f'Converting DeepSpeed checkpoint in {args.input_folder} to Megatron checkpoint in {args.output_folder}'
     )
 
-    ds_checkpoint = DeepSpeedCheckpoint(args.input_folder, args.target_tp,
-                                        args.target_pp)
+    ds_checkpoint = DeepSpeedCheckpoint(args.input_folder, args.target_tp, args.target_pp)
     iteration = ds_checkpoint.get_iteration()
     _create_latest_file(args.output_folder, iteration)
     checkpoint_paths = _create_checkpoint_paths(args.output_folder, iteration,
