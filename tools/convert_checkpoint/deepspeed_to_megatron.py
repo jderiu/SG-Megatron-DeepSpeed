@@ -98,10 +98,12 @@ def _renest_sd(sd):
     new_sd = OrderedDict()
     for key, value in sd.items():
         key = layer_rename_map.get(key, key)
+        a, b = key.split('.')
+        if a in new_sd:
+            new_sd[a][b] = value
+        else:
+            new_sd[a] = {b: value}
 
-        b = key.split('.')[-1]
-        a = '.'.join(key.split('.')[:-1])
-        new_sd[a] = {b: value}
     return new_sd
 
 
