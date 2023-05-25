@@ -1152,6 +1152,7 @@ def build_train_valid_test_data_iterators(
             'only backward compatiblity support for iteration-based training'
         if args.finetune:
             args.consumed_train_samples = args.iteration * args.global_batch_size
+            args.consumed_train_samples = 0
         else:
             args.consumed_train_samples = 0
     # it's possible that train was run, but not eval and it's valid if
